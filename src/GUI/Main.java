@@ -27,6 +27,7 @@ public class Main extends JFrame {
     private JButton btnPhieuNhap;
     private JButton btnHoaDon;
     private JButton btnKhachHang;
+    private JButton btnKhuyenMai;
     private JButton btnNhanVien;
     private JButton btnTaiKhoan;
     private JButton btnVaiTro;
@@ -111,6 +112,7 @@ public class Main extends JFrame {
         btnPhieuNhap = createMenuButton("Phiếu nhập");
         btnHoaDon = createMenuButton("Hóa đơn");
         btnKhachHang = createMenuButton("Khách hàng");
+        btnKhuyenMai = createMenuButton("Khuyến mãi");
         btnNhanVien = createMenuButton("Nhân viên");
         btnTaiKhoan = createMenuButton("Tài khoản");
         btnVaiTro = createMenuButton("Vai trò");
@@ -124,6 +126,7 @@ public class Main extends JFrame {
         menuPanel.add(btnPhieuNhap);
         menuPanel.add(btnHoaDon);
         menuPanel.add(btnKhachHang);
+        menuPanel.add(btnKhuyenMai);
         menuPanel.add(btnNhanVien);
         menuPanel.add(btnTaiKhoan);
         menuPanel.add(btnVaiTro);
@@ -143,6 +146,7 @@ public class Main extends JFrame {
         menuItems.add(btnPhieuNhap);
         menuItems.add(btnHoaDon);
         menuItems.add(btnKhachHang);
+        menuItems.add(btnKhuyenMai);
         menuItems.add(btnNhanVien);
         menuItems.add(btnTaiKhoan);
         menuItems.add(btnVaiTro);
@@ -192,6 +196,11 @@ public class Main extends JFrame {
         btnKhachHang.addActionListener(e -> {
             setPanel(new JLabel("Trang khách hàng", SwingConstants.CENTER));
             setActive(btnKhachHang);
+        });
+        // Khuyến mãi
+        btnKhuyenMai.addActionListener(e -> {
+            setPanel(new JLabel("Trang khuyến mãi", SwingConstants.CENTER));
+            setActive(btnKhuyenMai);
         });
 
         // Nhân viên
