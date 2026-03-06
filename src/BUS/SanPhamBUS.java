@@ -124,4 +124,35 @@ public class SanPhamBUS {
 
         return result;
     }
+    public ArrayList<SanPhamDTO> search(String text, String type) {
+        text = text.toLowerCase();
+        ArrayList<SanPhamDTO> result = new ArrayList<>();
+
+        for (SanPhamDTO sp : listSP) {
+
+            switch (type) {
+
+                case "Mã sản phẩm":
+                    if (sp.getMaSp().toLowerCase().contains(text)) {
+                        result.add(sp);
+                    }
+                    break;
+
+                case "Tên sản phẩm":
+                    if (sp.getTenSp().toLowerCase().contains(text)) {
+                        result.add(sp);
+                    }
+                    break;
+
+                default: // tìm tất cả
+                    if (sp.getMaSp().toLowerCase().contains(text)
+                            || sp.getTenSp().toLowerCase().contains(text)) {
+                        result.add(sp);
+                    }
+                    break;
+            }
+        }
+
+        return result;
+    }
 }
