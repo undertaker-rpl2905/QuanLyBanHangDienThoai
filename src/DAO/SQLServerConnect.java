@@ -22,9 +22,6 @@ public class SQLServerConnect {
             
             // Kết nối
             con = DriverManager.getConnection(url, user, pass);
-            if (con != null) {
-                System.out.println("Kết nối SQL Server thành công");
-            }
         } catch (ClassNotFoundException e) {
             System.out.println("Không tìm thấy Driver JDBC");
         } catch (SQLException e) {
@@ -36,7 +33,6 @@ public class SQLServerConnect {
         try {
             if (con != null && !con.isClosed()) {
                 con.close();
-                System.out.println("Đã đóng kết nối CSDL");
             }
         } catch (SQLException e) {
             System.out.println("Lỗi khi đóng kết nối: " + e.getMessage());

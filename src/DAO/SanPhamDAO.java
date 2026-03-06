@@ -270,5 +270,46 @@ public class SanPhamDAO implements DAOInterface<SanPhamDTO> {
         }
         return lastMa;
     }
+    public List<SanPhamDTO> getSearchTable(String text, String searchType) {
+        List<SanPhamDTO> result = new ArrayList<>();
+
+        if (text == null) {
+            text = "";
+        }
+
+        text = text.trim().toLowerCase();
+
+        for (SanPhamDTO sp : this.selectALL()) {
+
+            String maSp = sp.getMaSp() != null ? sp.getMaSp().toLowerCase() : "";
+            String tenSp = sp.getTenSp() != null ? sp.getTenSp().toLowerCase() : "";
+
+            switch (searchType) {
+                case "Tất cả":
+                    if (maSp.contains(text) || tenSp.contains(text)) {
+                        result.add(sp);
+                    }
+                    break;
+
+                case "Mã":
+                    if (maSp.contains(text)) {
+                        result.add(sp);
+                    }
+                    break;
+
+                case "Tên":
+                    if (tenSp.contains(text)) {
+                        result.add(sp);
+                    }
+                    break;
+
+                default:
+                    result.add(sp); // nếu lỗi thì trả về toàn bộ
+                    break;
+            }
+        }
+
+        return result;
+    }
 }
 
