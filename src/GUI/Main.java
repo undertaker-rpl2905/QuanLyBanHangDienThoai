@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import GUI.Panel.SanPhamPanel;
 import java.awt.*;
 import javax.swing.*;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Main extends JFrame {
     private JButton btnPhieuNhap;
     private JButton btnHoaDon;
     private JButton btnKhachHang;
+    private JButton btnKhuyenMai;
     private JButton btnNhanVien;
     private JButton btnTaiKhoan;
     private JButton btnVaiTro;
@@ -62,6 +64,9 @@ public class Main extends JFrame {
         JPanel leftContainer = new JPanel();
         leftContainer.setLayout(new BorderLayout());
         leftContainer.setPreferredSize(new Dimension(250, 800));
+        leftContainer.setBorder(BorderFactory.createMatteBorder(
+                0, 0, 0, 1, new Color(220, 220, 220)
+        ));
         add(leftContainer, BorderLayout.WEST);
         
         createInfoPanel(); //Thông tin người dùng phía trên
@@ -111,6 +116,7 @@ public class Main extends JFrame {
         btnPhieuNhap = createMenuButton("Phiếu nhập");
         btnHoaDon = createMenuButton("Hóa đơn");
         btnKhachHang = createMenuButton("Khách hàng");
+        btnKhuyenMai = createMenuButton("Khuyến mãi");
         btnNhanVien = createMenuButton("Nhân viên");
         btnTaiKhoan = createMenuButton("Tài khoản");
         btnVaiTro = createMenuButton("Vai trò");
@@ -124,6 +130,7 @@ public class Main extends JFrame {
         menuPanel.add(btnPhieuNhap);
         menuPanel.add(btnHoaDon);
         menuPanel.add(btnKhachHang);
+        menuPanel.add(btnKhuyenMai);
         menuPanel.add(btnNhanVien);
         menuPanel.add(btnTaiKhoan);
         menuPanel.add(btnVaiTro);
@@ -143,6 +150,7 @@ public class Main extends JFrame {
         menuItems.add(btnPhieuNhap);
         menuItems.add(btnHoaDon);
         menuItems.add(btnKhachHang);
+        menuItems.add(btnKhuyenMai);
         menuItems.add(btnNhanVien);
         menuItems.add(btnTaiKhoan);
         menuItems.add(btnVaiTro);
@@ -160,7 +168,8 @@ public class Main extends JFrame {
 
         // Sản phẩm
         btnSanPham.addActionListener(e -> {
-            setPanel(new JLabel("Trang sản phẩm", SwingConstants.CENTER));
+            SanPhamPanel sanPhamPanel = new SanPhamPanel();
+            setPanel(sanPhamPanel);
             setActive(btnSanPham);
         });
 
@@ -192,6 +201,11 @@ public class Main extends JFrame {
         btnKhachHang.addActionListener(e -> {
             setPanel(new JLabel("Trang khách hàng", SwingConstants.CENTER));
             setActive(btnKhachHang);
+        });
+        // Khuyến mãi
+        btnKhuyenMai.addActionListener(e -> {
+            setPanel(new JLabel("Trang khuyến mãi", SwingConstants.CENTER));
+            setActive(btnKhuyenMai);
         });
 
         // Nhân viên
