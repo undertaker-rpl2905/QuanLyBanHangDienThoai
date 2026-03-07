@@ -12,23 +12,26 @@ public class NhanVienDTO {
     private String diaChi;
     private String dienThoai;
     private double luongThang;
+    private int trangThai;  
 
     //  Constructor không tham số 
     public NhanVienDTO() {
+        this.trangThai = 1;
     }
-
+    
     // Constructor có tham số 
     public NhanVienDTO(String maNV, String ho, String ten,
-                       LocalDate ngaySinh, String diaChi,
-                       String dienThoai, double luongThang) {
-        this.maNV = maNV;
-        this.ho = ho;
-        this.ten = ten;
-        this.ngaySinh = ngaySinh;
-        this.diaChi = diaChi;
-        this.dienThoai = dienThoai;
-        this.luongThang = luongThang;
-    }
+                        LocalDate ngaySinh, String diaChi,
+                        String dienThoai, double luongThang, int trangThai) {
+         this.maNV = maNV;
+         this.ho = ho;
+         this.ten = ten;
+         this.ngaySinh = ngaySinh;
+         this.diaChi = diaChi;
+         this.dienThoai = dienThoai;
+         this.luongThang = luongThang;
+         this.trangThai = trangThai;
+     }
 
     //  Getter , Setter 
     public String getMaNV() {
@@ -86,6 +89,13 @@ public class NhanVienDTO {
     public void setLuongThang(double luongThang) {
         this.luongThang = luongThang;
     }
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
+    }
 
     @Override
     public int hashCode() {
@@ -107,10 +117,11 @@ public class NhanVienDTO {
                 "maNV='" + maNV + '\'' +
                 ", ho='" + ho + '\'' +
                 ", ten='" + ten + '\'' +
-                ", ngaySinh='" + ngaySinh + '\'' +
+                ", ngaySinh=" + ngaySinh +
                 ", diaChi='" + diaChi + '\'' +
                 ", dienThoai='" + dienThoai + '\'' +
                 ", luongThang=" + luongThang +
+                ", trangThai=" + trangThai +
                 '}';
     }
 }

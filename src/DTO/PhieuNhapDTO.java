@@ -9,16 +9,20 @@ public class PhieuNhapDTO {
     private int maNCC;
     private Timestamp ngay;
     private double tongTien;
+    private int trangThai;  
 
     public PhieuNhapDTO() {
+        this.trangThai = 1;
     }
 
-    public PhieuNhapDTO(int maPHN, String maNV, int maNCC, Timestamp ngay, double tongTien) {
+    public PhieuNhapDTO(int maPHN, String maNV, int maNCC,
+                        Timestamp ngay, double tongTien, int trangThai) {
         this.maPHN = maPHN;
         this.maNV = maNV;
         this.maNCC = maNCC;
-        this.ngay = ngay;
+        this.ngay = ngay;   
         this.tongTien = tongTien;
+        this.trangThai = trangThai;
     }
 
     public int getMaPHN() {
@@ -60,6 +64,13 @@ public class PhieuNhapDTO {
     public void setTongTien(double tongTien) {
         this.tongTien = tongTien;
     }
+    public int getTrangThai() {
+        return trangThai;
+    }
+    
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -76,12 +87,13 @@ public class PhieuNhapDTO {
 
     @Override
     public String toString() {
-        return "PhieuNhap {" +
+        return "PhieuNhapDTO{" +
                 "maPHN=" + maPHN +
                 ", maNV='" + maNV + '\'' +
                 ", maNCC=" + maNCC +
                 ", ngay=" + ngay +
                 ", tongTien=" + tongTien +
+                ", trangThai=" + trangThai +
                 '}';
     }
 

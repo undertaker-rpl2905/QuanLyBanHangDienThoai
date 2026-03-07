@@ -11,22 +11,24 @@ public class HoaDonDTO{
     private String maKH;
     private LocalDateTime ngayLapHD;
     private double tongTien;
-    public HoaDonDTO()
-    {
-        maHD="";
-        maNV="";
-        maKH="";
-        ngayLapHD=null;
-        tongTien=0;
+    private int trangThai;
+    public HoaDonDTO() {
+        maHD = "";
+        maNV = "";
+        maKH = "";
+        ngayLapHD = null;
+        tongTien = 0;
+        trangThai = 1;
     }
-    public HoaDonDTO(String maHD, String maNV, String maKH, LocalDateTime ngayLapHD, double tongTien )
-    {
-        this.maHD=maHD;
-        this.maNV=maNV;
-        this.maKH=maKH;
-        this.ngayLapHD=ngayLapHD;
-        this.tongTien=tongTien;
-    }
+    public HoaDonDTO(String maHD, String maNV, String maKH,
+                    LocalDateTime ngayLapHD, double tongTien, int trangThai) {
+       this.maHD = maHD;
+       this.maNV = maNV;
+       this.maKH = maKH;
+       this.ngayLapHD = ngayLapHD;
+       this.tongTien = tongTien;
+       this.trangThai = trangThai;
+   }
     public String getMaHD() {return maHD;}
     public void setMaHD(String maHD) {this.maHD=maHD;}
     
@@ -41,6 +43,14 @@ public class HoaDonDTO{
 
     public double getTongTien() {return tongTien;}
     public  void setTongTien(double tongTien) {this.tongTien=tongTien;}
+    
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
+    }
 
     @Override
     public int hashCode() {
@@ -61,8 +71,9 @@ public class HoaDonDTO{
                 "maHD='" + maHD + '\'' +
                 ", maNV='" + maNV + '\'' +
                 ", maKH='" + maKH + '\'' +
-                ", ngayLapHD='" + ngayLapHD + '\'' +
+                ", ngayLapHD=" + ngayLapHD +
                 ", tongTien=" + tongTien +
+                ", trangThai=" + trangThai +
                 '}';
     }
 }

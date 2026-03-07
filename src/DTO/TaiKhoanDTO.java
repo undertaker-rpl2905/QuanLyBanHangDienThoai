@@ -13,21 +13,24 @@ public class TaiKhoanDTO {
     private String matKhau;
     private String maNhanVien;
     private String maVaiTro;
+    private int trangThai;
 
     // ===== Constructor không tham số 
     public TaiKhoanDTO() {
+        this.trangThai = 1;
     }
 
     // ===== Constructor có tham số 
     public TaiKhoanDTO(String maTaiKhoan, String tenDangNhap,
-                       String matKhau, String maNhanVien,
-                       String maVaiTro) {
-        this.maTaiKhoan = maTaiKhoan;
-        this.tenDangNhap = tenDangNhap;
-        this.matKhau = matKhau;
-        this.maNhanVien = maNhanVien;
-        this.maVaiTro = maVaiTro;
-    }
+                    String matKhau, String maNhanVien,
+                    String maVaiTro, int trangThai) {
+     this.maTaiKhoan = maTaiKhoan;
+     this.tenDangNhap = tenDangNhap;
+     this.matKhau = matKhau;
+     this.maNhanVien = maNhanVien;  
+     this.maVaiTro = maVaiTro;
+     this.trangThai = trangThai;
+ }
 
     //  Getter setter
     public String getMaTaiKhoan() {
@@ -69,6 +72,13 @@ public class TaiKhoanDTO {
     public void setMaVaiTro(String maVaiTro) {
         this.maVaiTro = maVaiTro;
     }
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int    trangThai) {
+        this.trangThai = trangThai;
+    }
 
     //hashCode & equals (phân biệt theo mã tài khoản) 
     @Override
@@ -87,12 +97,13 @@ public class TaiKhoanDTO {
     //  toString 
     @Override
     public String toString() {
-        return "TaiKhoanDTO{" +
+        return "TaiKhoanDTO{" + 
                 "maTaiKhoan='" + maTaiKhoan + '\'' +
                 ", tenDangNhap='" + tenDangNhap + '\'' +
                 ", matKhau='" + matKhau + '\'' +
                 ", maNhanVien='" + maNhanVien + '\'' +
                 ", maVaiTro='" + maVaiTro + '\'' +
+                ", trangThai=" + trangThai +
                 '}';
     }
 }

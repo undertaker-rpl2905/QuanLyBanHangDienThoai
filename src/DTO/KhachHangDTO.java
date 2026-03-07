@@ -10,6 +10,7 @@ public class KhachHangDTO {
     private String ho;
     private String ten;
     private String diaChi;
+    private int trangThai;
 
     // Constructor mặc định
     public KhachHangDTO() {
@@ -17,14 +18,16 @@ public class KhachHangDTO {
         ho = "";
         ten = "";
         diaChi = "";
+        trangThai = 1;
     }
 
     // Constructor đầy đủ tham số
-    public KhachHangDTO(String maKH, String ho, String ten, String diaChi) {
+    public KhachHangDTO(String maKH, String ho, String ten, String diaChi, int trangThai) {
         this.maKH = maKH;
         this.ho = ho;
         this.ten = ten;
         this.diaChi = diaChi;
+        this.trangThai = trangThai;
     }
 
     // Getters và Setters
@@ -39,6 +42,13 @@ public class KhachHangDTO {
 
     public String getDiaChi() { return diaChi; }
     public void setDiaChi(String diaChi) { this.diaChi = diaChi; }
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
+    }
 
 
     // hashCode và equals
@@ -63,6 +73,7 @@ public class KhachHangDTO {
                 ", ho='" + ho + '\'' +
                 ", ten='" + ten + '\'' +
                 ", diaChi='" + diaChi + '\'' +
+                ", trangThai=" + trangThai +
                 '}';
     }
 }

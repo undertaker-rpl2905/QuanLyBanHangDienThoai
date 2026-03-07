@@ -7,16 +7,18 @@ public class NhaCungCapDTO {
     private String tenNCC;
     private String sdt;
     private String diaChi;
+    private int trangThai;
 
     public NhaCungCapDTO(){
-
+        this.trangThai = 1;
     }
 
-    public NhaCungCapDTO(int maNCC, String tenNCC, String sdt, String diachi){
+    public NhaCungCapDTO(int maNCC, String tenNCC, String sdt, String diaChi, int trangThai){
         this.maNCC = maNCC;
         this.tenNCC = tenNCC;
         this.sdt = sdt;
-        this.diaChi = diachi;
+        this.diaChi = diaChi;
+        this.trangThai = trangThai;
     }
 
     //getter
@@ -52,6 +54,13 @@ public class NhaCungCapDTO {
     public void setDiaChi(String diaChi){
         this.diaChi = diaChi;
     }
+    public int getTrangThai(){
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai){
+        this.trangThai = trangThai;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -69,11 +78,12 @@ public class NhaCungCapDTO {
 
     @Override
     public String toString(){
-        return "NhaCungCap {" +
+        return "NhaCungCapDTO{" +
                 "maNCC=" + maNCC +
                 ", tenNCC='" + tenNCC + '\'' +
                 ", sdt='" + sdt + '\'' +
                 ", diaChi='" + diaChi + '\'' +
+                ", trangThai=" + trangThai +
                 '}';
     }
 }
