@@ -8,7 +8,6 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import GUI.Component.ButtonToolBar;
-import GUI.TestIcon;
 /**
  *
  * @author user
