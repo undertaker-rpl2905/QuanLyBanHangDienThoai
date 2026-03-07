@@ -41,7 +41,7 @@ public class SanPhamBUS {
         return check;
     }
     public boolean delete(SanPhamDTO sp) {
-        boolean check = spDAO.delete(sp) != 0;
+            boolean check = spDAO.delete(sp) != 0;
         if (check) {
             listSP.remove(sp);
         }
@@ -112,7 +112,7 @@ public class SanPhamBUS {
 
         List<SanPhamDTO> result = new ArrayList<>();
 
-        for (SanPhamDTO e : spDAO.selectALL()) {
+        for (SanPhamDTO e : listSP) {
 
             boolean matchLoai = (maLoai == -1 || e.getMaLoai() == maLoai);
             boolean matchHang = (maHang == -1 || e.getMaHang() == maHang);
@@ -132,19 +132,19 @@ public class SanPhamBUS {
 
             switch (type) {
 
-                case "Mã sản phẩm":
+                case "Mã":
                     if (sp.getMaSp().toLowerCase().contains(text)) {
                         result.add(sp);
                     }
                     break;
 
-                case "Tên sản phẩm":
+                case "Tên":
                     if (sp.getTenSp().toLowerCase().contains(text)) {
                         result.add(sp);
                     }
                     break;
 
-                default: // tìm tất cả
+                default:
                     if (sp.getMaSp().toLowerCase().contains(text)
                             || sp.getTenSp().toLowerCase().contains(text)) {
                         result.add(sp);

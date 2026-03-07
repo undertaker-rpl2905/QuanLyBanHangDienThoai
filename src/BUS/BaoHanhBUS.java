@@ -1,13 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package BUS;
-
-/**
- *
- * @author user
- */
 
 import DAO.BaoHanhDAO;
 import DTO.BaoHanhDTO;
@@ -48,10 +39,7 @@ public class BaoHanhBUS {
     public boolean delete(BaoHanhDTO bh) {
         boolean check = bhDAO.delete(bh) != 0;
         if (check) {
-            int index = getIndexById(bh.getMaBH());
-            if (index != -1) {
-                listBH.remove(index);
-            }
+            listBH.remove(bh);   // giống SanPhamBUS
         }
         return check;
     }
@@ -120,5 +108,36 @@ public class BaoHanhBUS {
         }
         return result;
     }
-}
 
+    public ArrayList<BaoHanhDTO> search(String text, String type) {
+        text = text.toLowerCase();
+        ArrayList<BaoHanhDTO> result = new ArrayList<>();
+
+        for (BaoHanhDTO bh : listBH) {
+
+            switch (type) {
+
+                case "Mã":
+                    if (bh.getMaBH().toLowerCase().contains(text)) {
+                        result.add(bh);
+                    }
+                    break;
+
+                case "Tên":
+                    if (bh.getTenBH().toLowerCase().contains(text)) {
+                        result.add(bh);
+                    }
+                    break;
+
+                default:
+                    if (bh.getMaBH().toLowerCase().contains(text)
+                            || bh.getTenBH().toLowerCase().contains(text)) {
+                        result.add(bh);
+                    }
+                    break;
+            }
+        }
+
+        return result;
+    }
+}

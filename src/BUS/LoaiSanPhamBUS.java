@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package BUS;
 
 import DAO.LoaiSanPhamDAO;
@@ -20,6 +16,7 @@ public class LoaiSanPhamBUS {
     public ArrayList<LoaiSanPhamDTO> getAll() {
         return listLSP;
     }
+
     public int generateMaLoai() {
         int lastMa = lspDAO.getLastMaLoai();
         if (lastMa == 0) {
@@ -27,7 +24,6 @@ public class LoaiSanPhamBUS {
         }
         return lastMa + 1;
     }
-
 
     public boolean add(LoaiSanPhamDTO lsp) {
         lsp.setMaLoai(generateMaLoai());
@@ -38,14 +34,10 @@ public class LoaiSanPhamBUS {
         return check;
     }
 
-
     public boolean delete(LoaiSanPhamDTO lsp) {
         boolean check = lspDAO.delete(lsp) != 0;
         if (check) {
-            int index = getIndexById(lsp.getMaLoai());
-            if (index != -1) {
-                listLSP.remove(index);
-            }
+            listLSP.remove(lsp);   // giống SanPhamBUS
         }
         return check;
     }
@@ -61,8 +53,6 @@ public class LoaiSanPhamBUS {
         return check;
     }
 
-
-    // Tìm vị trí theo mã
     public int getIndexById(int maLoai) {
         for (int i = 0; i < listLSP.size(); i++) {
             if (listLSP.get(i).getMaLoai() == maLoai) {
@@ -72,7 +62,6 @@ public class LoaiSanPhamBUS {
         return -1;
     }
 
-    // Lấy theo vị trí
     public LoaiSanPhamDTO getByIndex(int index) {
         if (index < 0 || index >= listLSP.size()) {
             return null;
@@ -80,7 +69,6 @@ public class LoaiSanPhamBUS {
         return listLSP.get(index);
     }
 
-    // Tìm kiếm theo mã hoặc tên
     public ArrayList<LoaiSanPhamDTO> search(String text) {
         text = text.toLowerCase();
         ArrayList<LoaiSanPhamDTO> result = new ArrayList<>();
@@ -102,6 +90,7 @@ public class LoaiSanPhamBUS {
         }
         return true;
     }
+
     public String getTenLoaiSp(int maLoai) {
         int index = getIndexById(maLoai);
         if (index == -1) {
@@ -117,13 +106,13 @@ public class LoaiSanPhamBUS {
         }
         return result;
     }
+
     public int getMaByTen(String tenLoai) {
-        for (LoaiSanPhamDTO l : lspDAO.selectALL()) {
+        for (LoaiSanPhamDTO l : listLSP) {   // sửa để dùng list đã load
             if (l.getTenLoai().equalsIgnoreCase(tenLoai)) {
                 return l.getMaLoai();
             }
         }
-        return -1; // không tìm thấy
+        return -1;
     }
 }
-
