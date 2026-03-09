@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import GUI.Panel.PhieuNhap;
+import GUI.Panel.NhaCungCap;
 /**
  *
  * @author user
@@ -176,13 +178,13 @@ public class Main extends JFrame {
 
         // Nhà cung cấp
         btnNhaCungCap.addActionListener(e -> {
-            setPanel(new JLabel("Trang nhà cung cấp", SwingConstants.CENTER));
+            setPanel(new NhaCungCap());
             setActive(btnNhaCungCap);
         });
 
         // Phiếu nhập
         btnPhieuNhap.addActionListener(e -> {
-            setPanel(new JLabel("Trang phiếu nhập", SwingConstants.CENTER));
+            setPanel(new PhieuNhap());
             setActive(btnPhieuNhap);
         });
 

@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * Lớp giao diện đăng nhập hệ thống
- * @author user
+ * @author user 
  */
 public class LogIn extends JFrame {
 
