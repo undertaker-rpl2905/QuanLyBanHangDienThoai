@@ -1,12 +1,11 @@
 package GUI.Panel;
+
+import GUI.Component.ButtonToolBar; // Nhớ import ButtonToolBar
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import org.kordamp.ikonli.swing.FontIcon;
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import java.awt.Color;
-import com.toedter.calendar.JDateChooser;
+// Có thể xóa import của FontIcon vì không cần dùng nữa
 
 public class NhaCungCap extends JPanel {
 
@@ -19,68 +18,57 @@ public class NhaCungCap extends JPanel {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(10,10,10,10));
         
-        //PANEL
+        // PANEL
+        // Để các panel này tự nhiên thì mặc định nền của chúng sẽ là màu xám (Panel.background)
         JPanel pnlTop = new JPanel();
         JPanel pnlTopLeft = new JPanel();
         JPanel pnlTopRight = new JPanel();
         
         JPanel pnlMain = new JPanel();
-        pnlMain.setBackground(Color.RED);
         JPanel pnlMainLeft = new JPanel();
         JPanel pnlMainRight = new JPanel();
         
         add(pnlTop, BorderLayout.NORTH);
         add(pnlMain, BorderLayout.CENTER);
         
-        //TOP PANEL
+        // TOP PANEL
         pnlTop.setLayout(new BorderLayout());
         pnlTop.add(pnlTopLeft, BorderLayout.WEST);
         pnlTop.add(pnlTopRight, BorderLayout.EAST);
         
-        //LEFT
-        FontIcon iconThem = new FontIcon();
-        iconThem.setIkon(FontAwesomeSolid.PLUS);
-        iconThem.setIconSize(20);
-        iconThem.setIconColor(Color.decode("#3fa159"));
+        // Lấy màu nền xám mặc định của hệ thống
+        Color defaultGray = UIManager.getColor("Panel.background");
         
-        FontIcon iconSua = new FontIcon();
-        iconSua.setIkon(FontAwesomeSolid.HAMMER);
-        iconSua.setIconSize(20);
-        iconSua.setIconColor(Color.decode("#b3b354"));
+        // --- LEFT ---
+        // Sử dụng ButtonToolBar thay cho JButton + FontIcon
+        ButtonToolBar btnTopThem = new ButtonToolBar("Thêm", "icon/add.svg", 80, 60, 14, "ADD_NHACUNGCAP");
+        ButtonToolBar btnTopSua = new ButtonToolBar("Sửa", "icon/update.svg", 80, 60, 14, "EDIT_NHACUNGCAP");
+        ButtonToolBar btnTopXoa = new ButtonToolBar("Xóa", "icon/delete.svg", 80, 60, 14, "DELETE_NHACUNGCAP");
+        ButtonToolBar btnTopXuatFile = new ButtonToolBar("Xuất file", "icon/export.svg", 80, 60, 14, "EXPORT_NHACUNGCAP");
         
-        FontIcon iconXoa = new FontIcon();
-        iconXoa.setIkon(FontAwesomeSolid.MINUS_CIRCLE);
-        iconXoa.setIconSize(20);
-        iconXoa.setIconColor(Color.decode("#9e1919"));
-        
-        FontIcon iconXuatFile = new FontIcon();
-        iconXuatFile.setIkon(FontAwesomeSolid.FILE_EXPORT);
-        iconXuatFile.setIconSize(20);
-        iconXuatFile.setIconColor(Color.decode("#5242b8"));
-        
-        JButton btnTopThem = new JButton("Thêm", iconThem);
-        JButton btnTopSua = new JButton("Sửa", iconSua);
-        JButton btnTopXoa = new JButton("Xóa", iconXoa);
-        JButton btnTopXuatFile = new JButton("Xuất file", iconXuatFile);
+        // Chỉnh nền các nút thành màu xám cho chìm vào pnlTopLeft
+        btnTopThem.setBackground(defaultGray);
+        btnTopSua.setBackground(defaultGray);
+        btnTopXoa.setBackground(defaultGray);
+        btnTopXuatFile.setBackground(defaultGray);
         
         pnlTopLeft.add(btnTopThem);
         pnlTopLeft.add(btnTopSua);
         pnlTopLeft.add(btnTopXoa);
         pnlTopLeft.add(btnTopXuatFile);
                 
-        //RIGHT
+        // --- RIGHT ---
         JTextField txtTimKiem = new JTextField("Nhập mã nhà cung cấp");
         txtTimKiem.setPreferredSize(new Dimension(200,32));
         
-        FontIcon iconLamMoi = new FontIcon();
-        iconLamMoi.setIkon(FontAwesomeSolid.SYNC_ALT);
-        iconLamMoi.setIconSize(20);
-        JButton btnTopLamMoi = new JButton("Làm mới", iconLamMoi);
+        // Thay nút Làm mới bằng ButtonToolBar
+        ButtonToolBar btnTopLamMoi = new ButtonToolBar("", "icon/reload.svg", 80, 60, 14, "VIEW_NHACUNGCAP");
+        btnTopLamMoi.setBackground(defaultGray); // Chỉnh màu xám
         
         pnlTopRight.add(txtTimKiem);
         pnlTopRight.add(btnTopLamMoi);
             
-        //MAIN PANEL
+        // --- MAIN PANEL ---
         pnlMain.setBackground(Color.WHITE);
         pnlMain.setLayout(new BorderLayout(10,0));
         pnlMain.setBorder(new EmptyBorder(10,0,0,0));
@@ -88,11 +76,10 @@ public class NhaCungCap extends JPanel {
         pnlMain.add(pnlMainLeft, BorderLayout.WEST);
         pnlMain.add(pnlMainRight, BorderLayout.CENTER);
 
-        //Main Left
+        // Main Left
         pnlMainLeft.setPreferredSize(new Dimension(250,0));
         pnlMainLeft.setBorder(new EmptyBorder(0,10,0,0));
-        
+        pnlMainLeft.setBackground(defaultGray); // Bạn có thể linh hoạt set màu trắng hoặc xám tùy thiết kế
         
     }
 }
-

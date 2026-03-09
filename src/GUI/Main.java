@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import GUI.Panel.SanPhamPanel;
 import java.awt.*;
 import javax.swing.*;
 import java.util.List;
@@ -11,8 +12,7 @@ import java.util.ArrayList;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import GUI.Panel.PhieuNhap;
-import GUI.Panel.NhaCungCap;
+import GUI.Panel.*;
 /**
  *
  * @author user
@@ -65,6 +65,9 @@ public class Main extends JFrame {
         JPanel leftContainer = new JPanel();
         leftContainer.setLayout(new BorderLayout());
         leftContainer.setPreferredSize(new Dimension(250, 800));
+        leftContainer.setBorder(BorderFactory.createMatteBorder(
+                0, 0, 0, 1, new Color(220, 220, 220)
+        ));
         add(leftContainer, BorderLayout.WEST);
         
         createInfoPanel(); //Thông tin người dùng phía trên
@@ -166,7 +169,8 @@ public class Main extends JFrame {
 
         // Sản phẩm
         btnSanPham.addActionListener(e -> {
-            setPanel(new JLabel("Trang sản phẩm", SwingConstants.CENTER));
+            SanPhamPanel sanPhamPanel = new SanPhamPanel();
+            setPanel(sanPhamPanel);
             setActive(btnSanPham);
         });
 

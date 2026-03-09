@@ -14,16 +14,19 @@ public class HangSanXuatDTO {
     private int maHang;
     private String tenHang;
     private String diaChi;
+    private int trangThai;  
 
     // Constructor không tham số
     public HangSanXuatDTO() {
+        this.trangThai = 1;
     }
 
     // Constructor có tham số
-    public HangSanXuatDTO(int maHang, String tenHang, String diaChi) {
+    public HangSanXuatDTO(int maHang, String tenHang, String diaChi, int trangThai) {
         this.maHang = maHang;
         this.tenHang = tenHang;
         this.diaChi = diaChi;
+        this.trangThai = trangThai;
     }
 
     // Getter & Setter
@@ -50,6 +53,13 @@ public class HangSanXuatDTO {
     public void setDiaChi(String diaChi) {
         this.diaChi = diaChi;
     }
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
+    }
 
     // hashCode & equals (phân biệt theo mã hãng)
     @Override
@@ -72,6 +82,7 @@ public class HangSanXuatDTO {
                 "maHang=" + maHang +
                 ", tenHang='" + tenHang + '\'' +
                 ", diaChi='" + diaChi + '\'' +
+                ", trangThai=" + trangThai +
                 '}';
     }
 }

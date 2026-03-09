@@ -6,48 +6,48 @@ import java.util.ArrayList;
 
 public class ChiTietKhuyenMaiSanPhamBUS {
 
-    private ArrayList<ChiTietKhuyenMaiSanPhamDTO> list;
-    private ChiTietKhuyenMaiSanPhamDAO dao;
+    private final ChiTietKhuyenMaiSanPhamDAO dao = new ChiTietKhuyenMaiSanPhamDAO();
+    private ArrayList<ChiTietKhuyenMaiSanPhamDTO> listCTKM_SP = new ArrayList<>();
 
-    // Khởi tạo – load theo mã CTKM
+    // load theo mã CTKM
     public ChiTietKhuyenMaiSanPhamBUS(String maCTKM) {
-        dao = new ChiTietKhuyenMaiSanPhamDAO();
-        list = dao.selectALL(maCTKM);
+        listCTKM_SP = dao.selectALL(maCTKM);
     }
 
     public ArrayList<ChiTietKhuyenMaiSanPhamDTO> getAll() {
-        return list;
+        return listCTKM_SP;
     }
 
-    public int add(ChiTietKhuyenMaiSanPhamDTO t) {
-        int result = dao.insert(t);
-        if (result > 0) list.add(t);
-        return result;
-    }
-
-    public int delete(ChiTietKhuyenMaiSanPhamDTO dto) {
-        int index = getIndexById(dto.getMaCTKM(), dto.getMaSanPham());
-        if (index == -1) return 0;
-
-        int result = dao.delete(dto);
-
-        if (result > 0) {
-            list.remove(index);
+    public boolean add(ChiTietKhuyenMaiSanPhamDTO t) {
+        boolean check = dao.insert(t) != 0;
+        if (check) {
+            listCTKM_SP.add(t);
         }
-        return result;
+        return check;
     }
 
+    public boolean delete(ChiTietKhuyenMaiSanPhamDTO dto) {
+        boolean check = dao.delete(dto) != 0;
+        if (check) {
+            listCTKM_SP.remove(dto);
+        }
+        return check;
+    }
 
-    public int update(ChiTietKhuyenMaiSanPhamDTO t) {
-        int index = getIndexById(t.getMaCTKM(), t.getMaSanPham());
-        if (index == -1) return 0;
-        list.set(index, t);
-        return 1;
+    public boolean update(ChiTietKhuyenMaiSanPhamDTO t) {
+        boolean check = dao.update(t) != 0;
+        if (check) {
+            int index = getIndexById(t.getMaCTKM(), t.getMaSanPham());
+            if (index != -1) {
+                listCTKM_SP.set(index, t);
+            }
+        }
+        return check;
     }
 
     public int getIndexById(String maCTKM, String maSanPham) {
-        for (int i = 0; i < list.size(); i++) {
-            ChiTietKhuyenMaiSanPhamDTO ct = list.get(i);
+        for (int i = 0; i < listCTKM_SP.size(); i++) {
+            ChiTietKhuyenMaiSanPhamDTO ct = listCTKM_SP.get(i);
             if (ct.getMaCTKM().equals(maCTKM)
                     && ct.getMaSanPham().equals(maSanPham)) {
                 return i;
@@ -57,28 +57,33 @@ public class ChiTietKhuyenMaiSanPhamBUS {
     }
 
     public ChiTietKhuyenMaiSanPhamDTO getByIndex(int index) {
-        if (index < 0 || index >= list.size()) return null;
-        return list.get(index);
+        if (index < 0 || index >= listCTKM_SP.size()) {
+            return null;
+        }
+        return listCTKM_SP.get(index);
     }
 
-    public ArrayList<ChiTietKhuyenMaiSanPhamDTO> search(String key) {
+    public ArrayList<ChiTietKhuyenMaiSanPhamDTO> search(String text) {
+        text = text.toLowerCase();
         ArrayList<ChiTietKhuyenMaiSanPhamDTO> result = new ArrayList<>();
-        for (ChiTietKhuyenMaiSanPhamDTO t : list) {
-            if (t.getMaSanPham().contains(key)) {
+
+        for (ChiTietKhuyenMaiSanPhamDTO t : listCTKM_SP) {
+            if (t.getMaSanPham().toLowerCase().contains(text)) {
                 result.add(t);
             }
         }
+
         return result;
     }
 
-    public int checkDup(String maCTKM, String maSanPham) {
-        return getIndexById(maCTKM, maSanPham);
+    public boolean checkDup(String maCTKM, String maSanPham) {
+        return getIndexById(maCTKM, maSanPham) == -1;
     }
 
     public String[] getArr() {
-        String[] arr = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            arr[i] = list.get(i).getMaSanPham();
+        String[] arr = new String[listCTKM_SP.size()];
+        for (int i = 0; i < listCTKM_SP.size(); i++) {
+            arr[i] = listCTKM_SP.get(i).getMaSanPham();
         }
         return arr;
     }

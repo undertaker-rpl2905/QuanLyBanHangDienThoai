@@ -1,12 +1,14 @@
 package GUI.Panel;
+
+import GUI.Component.ButtonToolBar; // Nhớ import class này vào nhé
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import org.kordamp.ikonli.swing.FontIcon;
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
+import java.util.Set;
+import org.kordamp.ikonli.swing.FontIcon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 
 public class PhieuNhap extends JPanel {
     public PhieuNhap(){
@@ -14,7 +16,7 @@ public class PhieuNhap extends JPanel {
     }
     
     public void initUI(){
-        
+        Color defaultGray = UIManager.getColor("Panel.background");
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         setBorder(new EmptyBorder(10,10,10,10));
@@ -25,7 +27,7 @@ public class PhieuNhap extends JPanel {
         
         JPanel pnlTopBarLeftSub = new JPanel();
         pnlTopBarLeftSub.setLayout(new FlowLayout());
-        
+
         JPanel pnlTopBarRightSub = new JPanel();
         pnlTopBarRightSub.setLayout(new FlowLayout());
         
@@ -46,70 +48,54 @@ public class PhieuNhap extends JPanel {
         this.add(pnlTopBar, BorderLayout.NORTH); 
         this.add(pnlMain, BorderLayout.CENTER);
         
-        //TOP BAR PANEL IMPLEMENTS
-        //Left Sub
-        FontIcon iconThem = new FontIcon();
-        iconThem.setIkon(FontAwesomeSolid.PLUS);
-        iconThem.setIconSize(20);
-        iconThem.setIconColor(Color.decode("#3fa159"));
+        // --- TOP BAR PANEL IMPLEMENTS ---
         
-        FontIcon iconSua = new FontIcon();
-        iconSua.setIkon(FontAwesomeSolid.HAMMER);
-        iconSua.setIconSize(20);
-        iconSua.setIconColor(Color.decode("#b3b354"));
+        // 1. Left Sub (Thay thế toàn bộ FontIcon và JButton cũ bằng ButtonToolBar)
+        ButtonToolBar btnTopBarThem = new ButtonToolBar("Thêm", "icon/add.svg", 80, 60, 14, "ADD_PHIEUNHAP");
+        ButtonToolBar btnTopBarSua = new ButtonToolBar("Sửa", "icon/update.svg", 80, 60, 14, "EDIT_PHIEUNHAP");
+        ButtonToolBar btnTopBarXoa = new ButtonToolBar("Xóa", "icon/delete.svg", 80, 60, 14, "DELETE_PHIEUNHAP");
+        ButtonToolBar btnTopBarXuatFile = new ButtonToolBar("Xuất file", "icon/export.svg", 80, 60, 14, "EXPORT_PHIEUNHAP");
         
-        FontIcon iconXoa = new FontIcon();
-        iconXoa.setIkon(FontAwesomeSolid.MINUS_CIRCLE);
-        iconXoa.setIconSize(20);
-        iconXoa.setIconColor(Color.decode("#9e1919"));
-        
-        FontIcon iconXuatFile = new FontIcon();
-        iconXuatFile.setIkon(FontAwesomeSolid.FILE_EXPORT);
-        iconXuatFile.setIconSize(20);
-        iconXuatFile.setIconColor(Color.decode("#5242b8"));
-        
-        JButton btnTopBarThem = new JButton("Thêm", iconThem);
-        JButton btnTopBarSua = new JButton("Sửa", iconSua);
-        JButton btnTopBarXoa = new JButton("Xóa", iconXoa);
-        JButton btnTopBarXuatFile = new JButton("Xuất file", iconXuatFile);
+        // Đặt màu nền trắng cho các nút ở Top Bar để tiệp với nền của panel chứa chúng
+        btnTopBarThem.setBackground(defaultGray);
+        btnTopBarSua.setBackground(defaultGray);
+        btnTopBarXoa.setBackground(defaultGray);
+        btnTopBarXuatFile.setBackground(defaultGray);
+
+
         
         pnlTopBarLeftSub.add(btnTopBarThem);
         pnlTopBarLeftSub.add(btnTopBarSua);
         pnlTopBarLeftSub.add(btnTopBarXoa);
         pnlTopBarLeftSub.add(btnTopBarXuatFile);
-       
-        //Right Sub
+        
+        // 2. Right Sub
         JTextField txtTopBarTimKiem = new JTextField("Nhập mã phiếu nhập");
         txtTopBarTimKiem.setPreferredSize(new Dimension(200, 32));
         
-        FontIcon iconLamMoi = new FontIcon();
-        iconLamMoi.setIkon(FontAwesomeSolid.SYNC_ALT);
-        iconLamMoi.setIconSize(20);
-        JButton btnTopBarLamMoi = new JButton("Làm mới", iconLamMoi);
-        
+        ButtonToolBar btnTopBarLamMoi = new ButtonToolBar("", "icon/reload.svg", 80, 60, 14, "VIEW_PHIEUNHAP");
+        btnTopBarLamMoi.setBackground(Color.WHITE);
         pnlTopBarRightSub.add(txtTopBarTimKiem);
         pnlTopBarRightSub.add(btnTopBarLamMoi);
         
         
-        //MAIN PANEL IMPLEMENTS
+        // --- MAIN PANEL IMPLEMENTS ---
         
-        //MAIN RIGHT
+        // MAIN RIGHT
         pnlMainRight.setLayout(new BorderLayout());
         
         JPanel pnlMainRightFilter = new JPanel();
         JPanel pnlMainRightInfo = new JPanel();
 
-        //MAIN RIGHT FILTER
+        // MAIN RIGHT FILTER
         pnlMainRightFilter.setLayout(new BoxLayout(pnlMainRightFilter,BoxLayout.Y_AXIS));
         pnlMainRightFilter.setBorder(new EmptyBorder(20,10,10,10));
         
-        FontIcon iconLoc = new FontIcon();
-        iconLoc.setIkon(FontAwesomeSolid.FILTER);
-        iconLoc.setIconSize(20);
-        iconLoc.setIconColor(Color.decode("#d4802c"));
-       
-        JButton btnMainFilterLoc = new JButton("Lọc", iconLoc);
         
+        // Nút Lọc
+        ButtonToolBar btnMainFilterLoc = new ButtonToolBar("Lọc", "icon/filter.svg", 80, 60, 14, "VIEW_PHIEUNHAP");
+        btnTopBarLamMoi.setBackground(defaultGray);
+        btnMainFilterLoc.setBackground(defaultGray);
         Dimension labelSize = new Dimension(65, 30); // Ép nhãn rộng bằng nhau
         
         JLabel lblTuNgay = new JLabel("Từ ngày:");
@@ -142,8 +128,5 @@ public class PhieuNhap extends JPanel {
         
         pnlMainRight.add(pnlMainRightFilter, BorderLayout.NORTH);
         pnlMainRight.add(pnlMainRightInfo, BorderLayout.CENTER);
-
-        
     }
-
 }

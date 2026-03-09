@@ -12,22 +12,25 @@ public class BaoHanhDTO {
     private int thoiHan;           // số tháng bảo hành
     private Date ngayBatDau;
     private Date ngayKetThuc;
+    private int trangThai;
 
     // Constructor không tham số
     public BaoHanhDTO() {
+        this.trangThai = 1;
     }
 
     // Constructor đầy đủ tham số
     public BaoHanhDTO(String maBH, String tenBH, String maHD, String maSP,
-                      int thoiHan, Date ngayBatDau, Date ngayKetThuc) {
-        this.maBH = maBH;
-        this.tenBH = tenBH;
-        this.maHD = maHD;
-        this.maSP = maSP;
-        this.thoiHan = thoiHan;
-        this.ngayBatDau = ngayBatDau;
-        this.ngayKetThuc = ngayKetThuc;
-    }
+                    int thoiHan, Date ngayBatDau, Date ngayKetThuc, int trangThai) {
+      this.maBH = maBH;
+      this.tenBH = tenBH;
+      this.maHD = maHD;
+      this.maSP = maSP;
+      this.thoiHan = thoiHan;
+      this.ngayBatDau = ngayBatDau;
+      this.ngayKetThuc = ngayKetThuc;
+      this.trangThai = trangThai;
+  }
 
     public String getMaBH() {
         return maBH;
@@ -84,20 +87,26 @@ public class BaoHanhDTO {
     public void setNgayKetThuc(Date ngayKetThuc) {
         this.ngayKetThuc = ngayKetThuc;
     }
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BaoHanhDTO)) return false;
+        BaoHanhDTO that = (BaoHanhDTO) o;
+        return Objects.equals(maBH, that.maBH);
+    }
 
     @Override
     public int hashCode() {
         return Objects.hash(maBH);
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        BaoHanhDTO other = (BaoHanhDTO) obj;
-        return Objects.equals(this.maBH, other.maBH);
-    }
-
     @Override
     public String toString() {
         return "BaoHanhDTO{" +
@@ -108,6 +117,7 @@ public class BaoHanhDTO {
                 ", thoiHan=" + thoiHan +
                 ", ngayBatDau=" + ngayBatDau +
                 ", ngayKetThuc=" + ngayKetThuc +
+                ", trangThai=" + trangThai +
                 '}';
     }
 }

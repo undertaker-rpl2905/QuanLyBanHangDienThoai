@@ -13,15 +13,18 @@ import java.util.Objects;
 public class LoaiSanPhamDTO {
     private int maLoai;
     private String tenLoai;
+    private int trangThai;  
 
     // Constructor không tham số
     public LoaiSanPhamDTO() {
+        this.trangThai = 1;
     }
 
     // Constructor có tham số
-    public LoaiSanPhamDTO(int maLoai, String tenLoai) {
+    public LoaiSanPhamDTO(int maLoai, String tenLoai, int trangThai) {
         this.maLoai = maLoai;
         this.tenLoai = tenLoai;
+        this.trangThai = trangThai;
     }
 
     // Getter & Setter
@@ -39,6 +42,13 @@ public class LoaiSanPhamDTO {
 
     public void setTenLoai(String tenLoai) {
         this.tenLoai = tenLoai;
+    }
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
     }
 
     // hashCode & equals (phân biệt theo mã loại)
@@ -61,6 +71,7 @@ public class LoaiSanPhamDTO {
         return "LoaiSanPhamDTO{" +
                 "maLoai=" + maLoai +
                 ", tenLoai='" + tenLoai + '\'' +
+                ", trangThai=" + trangThai +
                 '}';
     }
 }

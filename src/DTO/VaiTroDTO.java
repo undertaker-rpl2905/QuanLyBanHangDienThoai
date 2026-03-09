@@ -10,15 +10,18 @@ public class VaiTroDTO {
     // ===== Thuộc tính 
     private String maVaiTro;
     private String tenVaiTro;
+    private int trangThai;
 
     // ===== Constructor không tham số 
     public VaiTroDTO() {
+        this.trangThai = 1;
     }
 
     // ===== Constructor có tham số 
-    public VaiTroDTO(String maVaiTro, String tenVaiTro) {
+    public VaiTroDTO(String maVaiTro, String tenVaiTro, int trangThai) {
         this.maVaiTro = maVaiTro;
         this.tenVaiTro = tenVaiTro;
+        this.trangThai = trangThai;
     }
 
     //  Getter & Setter
@@ -36,6 +39,13 @@ public class VaiTroDTO {
 
     public void setTenVaiTro(String tenVaiTro) {
         this.tenVaiTro = tenVaiTro;
+    }
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
     }
 
     //  hashCode & equals 
@@ -58,6 +68,7 @@ public class VaiTroDTO {
         return "VaiTroDTO{" +
                 "maVaiTro='" + maVaiTro + '\'' +
                 ", tenVaiTro='" + tenVaiTro + '\'' +
+                ", trangThai=" + trangThai +
                 '}';
     }
 }

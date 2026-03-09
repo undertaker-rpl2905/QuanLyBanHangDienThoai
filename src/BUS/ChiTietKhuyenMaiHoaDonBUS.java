@@ -6,48 +6,49 @@ import java.util.ArrayList;
 
 public class ChiTietKhuyenMaiHoaDonBUS {
 
-    private ArrayList<ChiTietKhuyenMaiHoaDonDTO> list;
-    private ChiTietKhuyenMaiHoaDonDAO dao;
+    private final ChiTietKhuyenMaiHoaDonDAO dao = new ChiTietKhuyenMaiHoaDonDAO();
+    private ArrayList<ChiTietKhuyenMaiHoaDonDTO> listCTKM_HD = new ArrayList<>();
 
-    // Khởi tạo – load theo mã CTKM
+    // load theo mã CTKM
     public ChiTietKhuyenMaiHoaDonBUS(String maCTKM) {
-        dao = new ChiTietKhuyenMaiHoaDonDAO();
-        list = dao.selectALL(maCTKM);
+        listCTKM_HD = dao.selectALL(maCTKM);
     }
 
     public ArrayList<ChiTietKhuyenMaiHoaDonDTO> getAll() {
-        return list;
+        return listCTKM_HD;
     }
 
-    public int add(ChiTietKhuyenMaiHoaDonDTO t) {
-        int result = dao.insert(t);
-        if (result > 0) list.add(t);
-        return result;
-    }
-
-    public int delete(ChiTietKhuyenMaiHoaDonDTO dto) {
-        int index = getIndexById(dto.getMaCTKM(), dto.getGiaTriToiThieu());
-        if (index == -1) return 0;
-
-        int result = dao.delete(dto);
-
-        if (result > 0) {
-            list.remove(index);
+    public boolean add(ChiTietKhuyenMaiHoaDonDTO t) {
+        boolean check = dao.insert(t) != 0;
+        if (check) {
+            listCTKM_HD.add(t);
         }
-
-        return result;
+        return check;
     }
 
-    public int update(ChiTietKhuyenMaiHoaDonDTO t) {
-        int index = getIndexById(t.getMaCTKM(), t.getGiaTriToiThieu());
-        if (index == -1) return 0;
-        list.set(index, t);
-        return 1; // thường bảng chi tiết ít update
+    public boolean delete(ChiTietKhuyenMaiHoaDonDTO dto) {
+        boolean check = dao.delete(dto) != 0;
+        if (check) {
+            listCTKM_HD.remove(dto);
+        }
+        return check;
+    }
+
+    public boolean update(ChiTietKhuyenMaiHoaDonDTO t) {
+        boolean check = dao.update(t) != 0;
+        if (check) {
+            int index = getIndexById(t.getMaCTKM(), t.getGiaTriToiThieu());
+            if (index != -1) {
+                listCTKM_HD.set(index, t);
+            }
+        }
+        return check;
     }
 
     public int getIndexById(String maCTKM, double giaTriToiThieu) {
-        for (int i = 0; i < list.size(); i++) {
-            ChiTietKhuyenMaiHoaDonDTO ct = list.get(i);
+        for (int i = 0; i < listCTKM_HD.size(); i++) {
+            ChiTietKhuyenMaiHoaDonDTO ct = listCTKM_HD.get(i);
+
             if (ct.getMaCTKM().equals(maCTKM)
                     && ct.getGiaTriToiThieu() == giaTriToiThieu) {
                 return i;
@@ -57,29 +58,35 @@ public class ChiTietKhuyenMaiHoaDonBUS {
     }
 
     public ChiTietKhuyenMaiHoaDonDTO getByIndex(int index) {
-        if (index < 0 || index >= list.size()) return null;
-        return list.get(index);
+        if (index < 0 || index >= listCTKM_HD.size()) {
+            return null;
+        }
+        return listCTKM_HD.get(index);
     }
 
     public ArrayList<ChiTietKhuyenMaiHoaDonDTO> search(double minValue) {
         ArrayList<ChiTietKhuyenMaiHoaDonDTO> result = new ArrayList<>();
-        for (ChiTietKhuyenMaiHoaDonDTO t : list) {
+
+        for (ChiTietKhuyenMaiHoaDonDTO t : listCTKM_HD) {
             if (t.getGiaTriToiThieu() >= minValue) {
                 result.add(t);
             }
         }
+
         return result;
     }
 
-    public int checkDup(String maCTKM, double giaTriToiThieu) {
-        return getIndexById(maCTKM, giaTriToiThieu);
+    public boolean checkDup(String maCTKM, double giaTriToiThieu) {
+        return getIndexById(maCTKM, giaTriToiThieu) == -1;
     }
 
     public String[] getArr() {
-        String[] arr = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            arr[i] = list.get(i).getGiaTriToiThieu() + "";
+        String[] arr = new String[listCTKM_HD.size()];
+
+        for (int i = 0; i < listCTKM_HD.size(); i++) {
+            arr[i] = listCTKM_HD.get(i).getGiaTriToiThieu() + "";
         }
+
         return arr;
     }
 }

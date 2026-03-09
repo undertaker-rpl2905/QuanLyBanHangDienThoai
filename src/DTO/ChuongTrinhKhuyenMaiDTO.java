@@ -20,7 +20,9 @@ public class ChuongTrinhKhuyenMaiDTO {
     private LocalDate ngayKetThuc;
     private int trangThai;
 
-    public ChuongTrinhKhuyenMaiDTO() {}
+    public ChuongTrinhKhuyenMaiDTO() {
+        this.trangThai = 1;
+    }
 
     public ChuongTrinhKhuyenMaiDTO(String maCTKM, String tenCTKM, String loaiKhuyenMai,
                                    String moTa, LocalDate ngayBatDau,

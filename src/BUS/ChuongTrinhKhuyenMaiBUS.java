@@ -6,91 +6,139 @@ import java.util.ArrayList;
 
 public class ChuongTrinhKhuyenMaiBUS {
 
-    private ArrayList<ChuongTrinhKhuyenMaiDTO> list;
-    private ChuongTrinhKhuyenMaiDAO dao;
+    private final ChuongTrinhKhuyenMaiDAO dao = new ChuongTrinhKhuyenMaiDAO();
+    private ArrayList<ChuongTrinhKhuyenMaiDTO> listCTKM = new ArrayList<>();
 
-    // Khởi tạo – load dữ liệu
     public ChuongTrinhKhuyenMaiBUS() {
-        dao = new ChuongTrinhKhuyenMaiDAO();
-        list = dao.selectALL();
+        listCTKM = dao.selectALL();
     }
 
-    // Lấy toàn bộ danh sách
     public ArrayList<ChuongTrinhKhuyenMaiDTO> getAll() {
-        return list;
+        return listCTKM;
     }
 
-    // Thêm
-    public int add(ChuongTrinhKhuyenMaiDTO t) {
-        if (checkDup(t.getMaCTKM()) != -1) return 0;
-        int result = dao.insert(t);
-        if (result > 0) list.add(t);
-        return result;
+    public String generateMaCTKM() {
+        String lastMa = dao.getLastMaCTKM();
+        if (lastMa == null) {
+            return "KM001";
+        }
+        int so = Integer.parseInt(lastMa.substring(2));
+        so++;
+        return String.format("KM%03d", so);
     }
 
-    // Xóa
-    public int delete(String maCTKM) {
-        int index = getIndexById(maCTKM);
-        if (index == -1) return 0;
-        int result = dao.delete(list.get(index));
-        if (result > 0) list.remove(index);
-        return result;
+    public boolean add(ChuongTrinhKhuyenMaiDTO t) {
+        t.setMaCTKM(generateMaCTKM());
+        boolean check = dao.insert(t) != 0;
+        if (check) {
+            listCTKM.add(t);
+        }
+        return check;
     }
 
-    // Sửa
-    public int update(ChuongTrinhKhuyenMaiDTO t) {
-        int index = getIndexById(t.getMaCTKM());
-        if (index == -1) return 0;
-        int result = dao.update(t);
-        if (result > 0) list.set(index, t);
-        return result;
+    public boolean delete(ChuongTrinhKhuyenMaiDTO t) {
+        boolean check = dao.delete(t) != 0;
+        if (check) {
+            listCTKM.remove(t);
+        }
+        return check;
     }
 
-    // Tìm vị trí theo mã
+    public boolean update(ChuongTrinhKhuyenMaiDTO t) {
+        boolean check = dao.update(t) != 0;
+        if (check) {
+            int index = getIndexById(t.getMaCTKM());
+            if (index != -1) {
+                listCTKM.set(index, t);
+            }
+        }
+        return check;
+    }
+
     public int getIndexById(String maCTKM) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getMaCTKM().equals(maCTKM)) {
+        for (int i = 0; i < listCTKM.size(); i++) {
+            if (listCTKM.get(i).getMaCTKM().equals(maCTKM)) {
                 return i;
             }
         }
         return -1;
     }
 
-    // Lấy phần tử theo vị trí
     public ChuongTrinhKhuyenMaiDTO getByIndex(int index) {
-        if (index < 0 || index >= list.size()) return null;
-        return list.get(index);
+        if (index < 0 || index >= listCTKM.size()) {
+            return null;
+        }
+        return listCTKM.get(index);
     }
 
-    // Tìm kiếm theo mã hoặc tên
-    public ArrayList<ChuongTrinhKhuyenMaiDTO> search(String key) {
+    public ArrayList<ChuongTrinhKhuyenMaiDTO> search(String text) {
+        text = text.toLowerCase();
         ArrayList<ChuongTrinhKhuyenMaiDTO> result = new ArrayList<>();
-        for (ChuongTrinhKhuyenMaiDTO t : list) {
-            if (t.getMaCTKM().toLowerCase().contains(key.toLowerCase())
-                    || t.getTenCTKM().toLowerCase().contains(key.toLowerCase())) {
+
+        for (ChuongTrinhKhuyenMaiDTO t : listCTKM) {
+            if (t.getMaCTKM().toLowerCase().contains(text)
+                    || t.getTenCTKM().toLowerCase().contains(text)) {
                 result.add(t);
             }
+        }
+
+        return result;
+    }
+
+    public boolean checkDup(String tenCTKM) {
+        for (ChuongTrinhKhuyenMaiDTO t : listCTKM) {
+            if (t.getTenCTKM().equalsIgnoreCase(tenCTKM.trim())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String getTenCTKM(String maCTKM) {
+        int index = getIndexById(maCTKM);
+        if (index == -1) {
+            return null;
+        }
+        return listCTKM.get(index).getTenCTKM();
+    }
+
+    public String[] getArr() {
+        String[] result = new String[listCTKM.size()];
+        for (int i = 0; i < listCTKM.size(); i++) {
+            result[i] = listCTKM.get(i).getTenCTKM();
         }
         return result;
     }
 
-    // Kiểm tra trùng mã
-    public int checkDup(String maCTKM) {
-        return getIndexById(maCTKM);
-    }
+    public ArrayList<ChuongTrinhKhuyenMaiDTO> search(String text, String type) {
+        text = text.toLowerCase();
+        ArrayList<ChuongTrinhKhuyenMaiDTO> result = new ArrayList<>();
 
-    // Lấy tên theo mã
-    public String getTen(String maCTKM) {
-        int index = getIndexById(maCTKM);
-        return index != -1 ? list.get(index).getTenCTKM() : "";
-    }
+        for (ChuongTrinhKhuyenMaiDTO t : listCTKM) {
 
-    // Trả mảng tên cho combobox
-    public String[] getArr() {
-        String[] arr = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            arr[i] = list.get(i).getTenCTKM();
+            switch (type) {
+
+                case "Mã":
+                    if (t.getMaCTKM().toLowerCase().contains(text)) {
+                        result.add(t);
+                    }
+                    break;
+
+                case "Tên":
+                    if (t.getTenCTKM().toLowerCase().contains(text)) {
+                        result.add(t);
+                    }
+                    break;
+
+                default:
+                    if (t.getMaCTKM().toLowerCase().contains(text)
+                            || t.getTenCTKM().toLowerCase().contains(text)) {
+                        result.add(t);
+                    }
+                    break;
+            }
         }
-        return arr;
+
+        return result;
     }
 }

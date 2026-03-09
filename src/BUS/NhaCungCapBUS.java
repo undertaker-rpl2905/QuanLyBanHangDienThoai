@@ -5,108 +5,162 @@ import DTO.NhaCungCapDTO;
 import java.util.ArrayList;
 
 public class NhaCungCapBUS {
-    
-    private final NhaCungCapDAO dao = NhaCungCapDAO.getInstance();
-    private ArrayList<NhaCungCapDTO> list = new ArrayList<>();
-    
+
+    private final NhaCungCapDAO nccDAO = NhaCungCapDAO.getInstance();
+    private ArrayList<NhaCungCapDTO> listNCC = new ArrayList<>();
+
     public NhaCungCapBUS() {
-        list = dao.selectALL();
+        listNCC = nccDAO.selectALL();
     }
-    
+
     public ArrayList<NhaCungCapDTO> getAll() {
-        return list;
+        return listNCC;
     }
-    
+
+    // Tạo mã NCC
     public int generateID() {
-        if (list.isEmpty()) {
+
+        if (listNCC.isEmpty()) {
             return 1;
         }
-        
-        int maxID = list.get(0).getMaNCC();
-        for (NhaCungCapDTO dto : list) {
-            if (dto.getMaNCC() > maxID) {
-                maxID = dto.getMaNCC();
+
+        int maxID = listNCC.get(0).getMaNCC();
+
+        for (NhaCungCapDTO ncc : listNCC) {
+
+            if (ncc.getMaNCC() > maxID) {
+                maxID = ncc.getMaNCC();
             }
         }
-        return maxID + 1;  
-    }
-    
-    public boolean add(NhaCungCapDTO dto) {
-        dto.setMaNCC(generateID());
-        boolean rs = dao.insert(dto) != 0;
-        if (rs) {
-            list.add(dto);
-        }
-        return rs;
-    }
-    
-    public boolean delete(NhaCungCapDTO dto) {
-        boolean rs = dao.delete(dto) != 0;
-        if (rs) {
-            int index = getIndexById(dto.getMaNCC());
-            if (index != -1) {
-                list.remove(index);
-            }
-        }
-        return rs;
+
+        return maxID + 1;
     }
 
-    public boolean update(NhaCungCapDTO dto) {
-        boolean rs = dao.update(dto) != 0;
-        if (rs) {
-            int index = getIndexById(dto.getMaNCC());
-            if (index != -1) {
-                list.set(index, dto);
-            }
+    // Thêm
+    public boolean add(NhaCungCapDTO ncc) {
+
+        ncc.setMaNCC(generateID());
+
+        boolean check = nccDAO.insert(ncc) != 0;
+
+        if (check) {
+            listNCC.add(ncc);
         }
-        return rs;
+
+        return check;
     }
 
+    // Xóa
+    public boolean delete(NhaCungCapDTO ncc) {
+
+        boolean check = nccDAO.delete(ncc) != 0;
+
+        if (check) {
+
+            int index = getIndexById(ncc.getMaNCC());
+
+            if (index != -1) {
+                listNCC.remove(index);
+            }
+        }
+
+        return check;
+    }
+
+    // Sửa
+    public boolean update(NhaCungCapDTO ncc) {
+
+        boolean check = nccDAO.update(ncc) != 0;
+
+        if (check) {
+
+            int index = getIndexById(ncc.getMaNCC());
+
+            if (index != -1) {
+                listNCC.set(index, ncc);
+            }
+        }
+
+        return check;
+    }
+
+    // Tìm index theo mã
     public int getIndexById(int maNCC) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getMaNCC() == maNCC) {
+
+        for (int i = 0; i < listNCC.size(); i++) {
+
+            if (listNCC.get(i).getMaNCC() == maNCC) {
                 return i;
             }
         }
+
         return -1;
     }
 
+    // Lấy theo index
+    public NhaCungCapDTO getByIndex(int index) {
+
+        if (index < 0 || index >= listNCC.size()) {
+            return null;
+        }
+
+        return listNCC.get(index);
+    }
+
+    // Search
+    public ArrayList<NhaCungCapDTO> search(String text) {
+
+        text = text.toLowerCase();
+        ArrayList<NhaCungCapDTO> result = new ArrayList<>();
+
+        for (NhaCungCapDTO ncc : listNCC) {
+
+            if (String.valueOf(ncc.getMaNCC()).contains(text)
+                    || ncc.getTenNCC().toLowerCase().contains(text)
+                    || ncc.getSDT().contains(text)) {
+
+                result.add(ncc);
+            }
+        }
+
+        return result;
+    }
+
+    // Kiểm tra trùng tên
     public boolean checkDup(String tenNCC) {
-        for (NhaCungCapDTO dto : list) {
-            if (dto.getTenNCC().equalsIgnoreCase(tenNCC.trim())) {
+
+        for (NhaCungCapDTO ncc : listNCC) {
+
+            if (ncc.getTenNCC().equalsIgnoreCase(tenNCC.trim())) {
                 return false;
             }
         }
+
         return true;
     }
 
-    public ArrayList<NhaCungCapDTO> search(String text) {
-        text = text.toLowerCase();
-        ArrayList<NhaCungCapDTO> result = new ArrayList<>();
-        
-        for (NhaCungCapDTO dto : list) {
-            if (String.valueOf(dto.getMaNCC()).contains(text)
-                    || dto.getTenNCC().toLowerCase().contains(text)
-                    || dto.getSDT().contains(text)) {
-                result.add(dto);
-            }
-        }
-        return result;
-    }
-    
+    // Lấy tên NCC
     public String getTenNCC(int maNCC) {
+
         int index = getIndexById(maNCC);
+
         if (index == -1) {
             return null;
         }
-        return list.get(index).getTenNCC();
+
+        return listNCC.get(index).getTenNCC();
     }
 
+    // Mảng cho combobox
     public String[] getArr() {
-        String[] result = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            result[i] = list.get(i).getTenNCC();
+
+        String[] result = new String[listNCC.size()];
+
+        for (int i = 0; i < listNCC.size(); i++) {
+
+            result[i] = listNCC.get(i).getTenNCC();
         }
+
         return result;
     }
 }

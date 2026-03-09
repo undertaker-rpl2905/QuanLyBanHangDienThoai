@@ -41,7 +41,7 @@ public class SanPhamBUS {
         return check;
     }
     public boolean delete(SanPhamDTO sp) {
-        boolean check = spDAO.delete(sp) != 0;
+            boolean check = spDAO.delete(sp) != 0;
         if (check) {
             listSP.remove(sp);
         }
@@ -112,13 +112,44 @@ public class SanPhamBUS {
 
         List<SanPhamDTO> result = new ArrayList<>();
 
-        for (SanPhamDTO e : spDAO.selectALL()) {
+        for (SanPhamDTO e : listSP) {
 
             boolean matchLoai = (maLoai == -1 || e.getMaLoai() == maLoai);
             boolean matchHang = (maHang == -1 || e.getMaHang() == maHang);
 
             if (matchLoai && matchHang) {
                 result.add(e);
+            }
+        }
+
+        return result;
+    }
+    public ArrayList<SanPhamDTO> search(String text, String type) {
+        text = text.toLowerCase();
+        ArrayList<SanPhamDTO> result = new ArrayList<>();
+
+        for (SanPhamDTO sp : listSP) {
+
+            switch (type) {
+
+                case "Mã":
+                    if (sp.getMaSp().toLowerCase().contains(text)) {
+                        result.add(sp);
+                    }
+                    break;
+
+                case "Tên":
+                    if (sp.getTenSp().toLowerCase().contains(text)) {
+                        result.add(sp);
+                    }
+                    break;
+
+                default:
+                    if (sp.getMaSp().toLowerCase().contains(text)
+                            || sp.getTenSp().toLowerCase().contains(text)) {
+                        result.add(sp);
+                    }
+                    break;
             }
         }
 
