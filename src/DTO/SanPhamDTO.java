@@ -13,6 +13,7 @@ import java.util.Objects;
 public class SanPhamDTO {
     private String maSp;
     private String tenSp;
+    private String hinhAnh;
     private int soLuongTon;
     private double donGia;
     private String donViTinh;
@@ -26,10 +27,13 @@ public class SanPhamDTO {
     }
 
     // Constructor có tham số
-    public SanPhamDTO(String maSp, String tenSp, int soLuongTon, double donGia,
-                  String donViTinh, int maLoai, int maHang, int trangThai) {
+    public SanPhamDTO(String maSp, String tenSp, String hinhAnh,
+            int soLuongTon, double donGia, String donViTinh,
+            int maLoai, int maHang, int trangThai) {
+
         this.maSp = maSp;
         this.tenSp = tenSp;
+        this.hinhAnh = hinhAnh;
         this.soLuongTon = soLuongTon;
         this.donGia = donGia;
         this.donViTinh = donViTinh;
@@ -53,6 +57,13 @@ public class SanPhamDTO {
 
     public void setTenSp(String tenSp) {
         this.tenSp = tenSp;
+    }
+    public String getHinhAnh() {
+        return hinhAnh;
+    }
+
+    public void setHinhAnh(String hinhAnh) {
+        this.hinhAnh = hinhAnh;
     }
 
     public int getSoLuongTon() {
@@ -120,6 +131,7 @@ public class SanPhamDTO {
         return "SanPhamDTO{" +
                 "maSp='" + maSp + '\'' +
                 ", tenSp='" + tenSp + '\'' +
+                ", hinhAnh='" + hinhAnh + '\'' +
                 ", soLuongTon=" + soLuongTon +
                 ", donGia=" + donGia +
                 ", donViTinh='" + donViTinh + '\'' +
