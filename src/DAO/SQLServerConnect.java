@@ -19,7 +19,7 @@ public class SQLServerConnect {
                 "databaseName=QLBanHangDT;" +
                 "encrypt=false";
             String user = "sa";
-            String pass = "123456789";
+            String pass = "123";
             
             // Kết nối
             con = DriverManager.getConnection(url, user, pass);
