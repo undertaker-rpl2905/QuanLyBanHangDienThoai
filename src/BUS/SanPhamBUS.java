@@ -20,6 +20,7 @@ public class SanPhamBUS {
         listSP = spDAO.selectALL();
     }
     public ArrayList<SanPhamDTO> getAll() {
+        listSP = spDAO.selectALL();   // đọc lại database
         return listSP;
     }
     public String generateMaSP() {
@@ -32,19 +33,20 @@ public class SanPhamBUS {
         return String.format("SP%03d", so);
     }
 
-    public boolean add(SanPhamDTO sp) {
-        sp.setMaSp(generateMaSP());
-        boolean check = spDAO.insert(sp) != 0;
-        if (check) {
-            listSP.add(sp);
-        }
-        return check;
+    public boolean add(SanPhamDTO sp){
+        int result = SanPhamDAO.getInstance().insert(sp);
+        return result > 0;
     }
     public boolean delete(SanPhamDTO sp) {
-            boolean check = spDAO.delete(sp) != 0;
+        boolean check = spDAO.delete(sp) != 0;
+
         if (check) {
-            listSP.remove(sp);
+            int index = getIndexById(sp.getMaSp());
+            if (index != -1) {
+                listSP.remove(index);
+            }
         }
+
         return check;
     }
     public boolean update(SanPhamDTO sp) {
