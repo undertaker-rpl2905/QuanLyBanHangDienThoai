@@ -35,6 +35,17 @@ import GUI.Component.FilterItem;
 import GUI.Component.HeaderRightPanel;
 import GUI.Component.TablePanel;
 import GUI.Component.ButtonToolBar;
+import GUI.Dialog.ChiTietSanPhamDialog;
+import GUI.Dialog.CreateSanPhamDialog;
+import gui.dialog.UpdateSanPhamDialog;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.BufferedInputStream;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import utils.JTableExporter;
 /**
  *
  * @author user
@@ -80,7 +91,7 @@ public class SanPhamPanel extends JPanel{
         headerPanel = new JPanel();
         headerRightPanel = new HeaderRightPanel();
         actionPanel = new ActionPanel();
-        
+        actionPanel.configButtons(new String[]{ "add", "update", "delete", "info", "import", "export" });
         tablePanel = new TablePanel(
             "Danh sách thông tin sản phẩm",
             new String[]{
@@ -222,12 +233,14 @@ public class SanPhamPanel extends JPanel{
         return sanPhamBUS.getFilterTable(maLoai, maHang);
     }
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Chức năng đang được phát triển!",
-            "Thông báo",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE
+        CreateSanPhamDialog dialog = new CreateSanPhamDialog(
+                (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this),
+                true,
+                this
         );
+
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
         try {
@@ -237,7 +250,27 @@ public class SanPhamPanel extends JPanel{
                 throw new IndexOutOfBoundsException();
             }
 
-            JOptionPane.showMessageDialog(this, "Chưa tạo form cập nhật thuốc!");
+            // lấy sản phẩm từ list
+            String maSp = table.getValueAt(row, 1).toString();
+
+            SanPhamDTO sp = null;
+
+            for (SanPhamDTO s : listSp) {
+                if (s.getMaSp().equals(maSp)) {
+                    sp = s;
+                    break;
+                }
+            }
+
+            UpdateSanPhamDialog dialog = new UpdateSanPhamDialog(
+                    (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this),
+                    true,
+                    this,
+                    sp
+            );
+
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
 
         } catch (IndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng");
@@ -254,7 +287,8 @@ public class SanPhamPanel extends JPanel{
             return;
         }
 
-        String id = table.getValueAt(row, 1).toString();
+        // LẤY MÃ SẢN PHẨM
+        String id = table.getValueAt(row, 1).toString();  
 
         int confirm = JOptionPane.showConfirmDialog(
                 this,
@@ -265,25 +299,30 @@ public class SanPhamPanel extends JPanel{
 
         if (confirm == JOptionPane.YES_OPTION) {
 
+            int index = sanPhamBUS.getIndexById(id);
 
-            SanPhamDTO sp = new SanPhamDTO();
-            sp.setMaSp(id);
+            if (index == -1) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm");
+                return;
+            }
 
-            sanPhamBUS.delete(sp);
+            SanPhamDTO sp = sanPhamBUS.getByIndex(index);
 
-            modal.removeRow(row);
+            boolean check = sanPhamBUS.delete(sp);
 
-            JOptionPane.showMessageDialog(this,
-                    "Xóa thành công!",
-                    "Thông báo",
-                    JOptionPane.INFORMATION_MESSAGE);
+            if (check) {
+                loadTable(sanPhamBUS.getAll());
+                JOptionPane.showMessageDialog(this, "Xóa thành công!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Xóa thất bại!");
+            }
         }
     }
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {
-        JOptionPane.showMessageDialog(this, "Chưa làm chức năng Import Excel!");
+        importExcel();
     }
-    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
-        JOptionPane.showMessageDialog(this, "Chưa làm chức năng Export Excel!");
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        JTableExporter.exportJTableToExcel(table);
     }
     private void txtSearchKeyReleased(KeyEvent evt) {
 
@@ -317,14 +356,100 @@ public class SanPhamPanel extends JPanel{
             return;
         }
 
-        JOptionPane.showMessageDialog(
-                this,
-                "Chưa tạo form xem chi tiết sản phẩm!",
-                "Thông báo",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        String maSP = table.getValueAt(row, 0).toString();
+
+        SanPhamBUS spBUS = new SanPhamBUS();
+        SanPhamDTO sp = spBUS.getByIndex(row); // hàm lấy sản phẩm theo mã
+
+        ChiTietSanPhamDialog dialog =
+            new ChiTietSanPhamDialog(
+                    (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this),
+                    true,
+                    sp
+            );
+
+        dialog.setVisible(true);
     }
     private void btnThuocTinhActionPerformed(java.awt.event.ActionEvent evt) {
         JOptionPane.showMessageDialog(this, "Chưa tạo trang Thuộc tính!");
+    }
+    public void importExcel() {
+        JFileChooser jf = new JFileChooser();
+        jf.setDialogTitle("Chọn file Excel");
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Excel Files", "xls", "xlsx", "xlsm");
+        jf.setFileFilter(filter);
+
+        int result = jf.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+
+            int error = 0;
+
+            try {
+
+                File file = jf.getSelectedFile();
+                FileInputStream fis = new FileInputStream(file);
+                BufferedInputStream bis = new BufferedInputStream(fis);
+
+                XSSFWorkbook workbook = new XSSFWorkbook(bis);
+                XSSFSheet sheet = workbook.getSheetAt(0);
+
+                for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+
+                    XSSFRow row = sheet.getRow(i);
+
+                    if (row == null) continue;
+                    
+                    if(row.getCell(0) == null || row.getCell(1) == null) continue;
+                    String maSp = row.getCell(0).toString();
+                    String tenSp = row.getCell(1).toString();
+                    int soLuong = Integer.parseInt(row.getCell(2).toString().split("\\.")[0]);
+                    double donGia = Double.parseDouble( row.getCell(3).toString().replace(",", "") );
+                    String donViTinh = row.getCell(4).toString();
+
+                    String tenLoai = row.getCell(5).toString();
+                    String tenHang = row.getCell(6).toString();
+
+                    int maLoai = loaiBUS.getMaByTen(tenLoai);
+                    int maHang = hangBUS.getMaByTen(tenHang);
+
+                    if (maSp.isEmpty() || tenSp.isEmpty()) {
+                        error++;
+                        continue;
+                    }
+
+                    SanPhamDTO sp = new SanPhamDTO(
+                        maSp,
+                        tenSp,
+                        "",          // hinhAnh
+                        soLuong,
+                        donGia,
+                        donViTinh,
+                        maLoai,
+                        maHang,
+                        1            // trangThai
+                    );
+
+                    sanPhamBUS.add(sp);
+
+                }
+
+                loadTable(sanPhamBUS.getAll());
+
+                JOptionPane.showMessageDialog(this,
+                        "Import Excel thành công!");
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Lỗi đọc file Excel!");
+            }
+
+            if (error > 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Có " + error + " dòng bị lỗi!");
+            }
+        }
     }
 }
