@@ -42,6 +42,7 @@ public class FilterItem extends JPanel {
     }
 
     public String getSelectedItem() {
-        return cboFilter.getSelectedItem().toString();
+    Object selected = cboFilter.getSelectedItem();
+    return selected == null ? null : selected.toString();
     }
 }
