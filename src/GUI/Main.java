@@ -4,24 +4,34 @@
  */
 package GUI;
 
+import GUI.Panel.KhuyenMaiGUI;
+import GUI.Panel.NhaCungCap;
+import GUI.Panel.PhieuNhap;
 import GUI.Panel.SanPhamPanel;
-import java.awt.*;
-import javax.swing.*;
-import java.util.List;
-import java.util.ArrayList;
-import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import GUI.Panel.*;
-/**
- *
- * @author user
- */
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 public class Main extends JFrame {
+
     private JPanel mainContent;
     private JPanel sidebar;
     private JPanel infoPanel;
-    
+
     private JButton btnTrangChu;
     private JButton btnSanPham;
     private JButton btnBaoHanh;
@@ -35,81 +45,83 @@ public class Main extends JFrame {
     private JButton btnVaiTro;
     private JButton btnThongKe;
     private JButton btnLogout;
-    
+
     private List<JButton> menuItems;
-    
+
     private final Color ACTIVE_COLOR = new Color(65, 120, 255);
-    
-    public Main(){
+
+    public Main() {
         initUI();
     }
-    private void initUI(){
+
+    private void initUI() {
         setTitle("Quản lý cửa hàng bán hàng điện thoại");
         setSize(1300, 800);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        
-        createMainContent(); //Phần nội dung bên phải
-        createLeftSide(); //Phần thanh bên trái
+
+        createMainContent();
+        createLeftSide();
 
         setVisible(true);
     }
-    private void createMainContent(){
-        mainContent = new JPanel();
-        mainContent.setLayout(new BorderLayout());
+
+    private void createMainContent() {
+        mainContent = new JPanel(new BorderLayout());
         mainContent.setBackground(new Color(245, 245, 245));
         add(mainContent, BorderLayout.CENTER);
     }
-    private void createLeftSide(){
-        JPanel leftContainer = new JPanel();
-        leftContainer.setLayout(new BorderLayout());
+
+    private void createLeftSide() {
+        JPanel leftContainer = new JPanel(new BorderLayout());
         leftContainer.setPreferredSize(new Dimension(250, 800));
         leftContainer.setBorder(BorderFactory.createMatteBorder(
                 0, 0, 0, 1, new Color(220, 220, 220)
         ));
         add(leftContainer, BorderLayout.WEST);
-        
-        createInfoPanel(); //Thông tin người dùng phía trên
-        createSidebar(); //Phần nút điều hướng
-        
+
+        createInfoPanel();
+        createSidebar();
+
         leftContainer.add(infoPanel, BorderLayout.NORTH);
         leftContainer.add(sidebar, BorderLayout.CENTER);
     }
-    private void createInfoPanel(){
-        infoPanel = new JPanel();
+
+    private void createInfoPanel() {
+        infoPanel = new JPanel(new BorderLayout());
         infoPanel.setBackground(Color.WHITE);
-        infoPanel.setLayout(new BorderLayout());
-        
+
         JLabel lblAvatar = new JLabel("👤", SwingConstants.CENTER);
         lblAvatar.setPreferredSize(new Dimension(80, 80));
-        lblAvatar.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 30)); // tăng size
-        
+        lblAvatar.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 30));
+
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
         textPanel.setBackground(Color.WHITE);
         textPanel.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
-        
+
         JLabel lblName = new JLabel("Nguyễn Văn A");
         JLabel lblRole = new JLabel("Quản lý");
+
         lblName.setAlignmentX(Component.LEFT_ALIGNMENT);
         lblRole.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
+
         textPanel.add(lblName);
         textPanel.add(lblRole);
-        
+
         infoPanel.add(lblAvatar, BorderLayout.WEST);
         infoPanel.add(textPanel, BorderLayout.CENTER);
     }
-    private void createSidebar(){
-        sidebar = new JPanel();
-        sidebar.setLayout(new BorderLayout());
+
+    private void createSidebar() {
+        sidebar = new JPanel(new BorderLayout());
         sidebar.setBackground(Color.WHITE);
-        
+
         JPanel menuPanel = new JPanel();
-        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS)); //Sắp xếp theo chiều dọc
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBackground(Color.WHITE);
-        
+
         btnTrangChu = createMenuButton("Trang chủ");
         btnSanPham = createMenuButton("Sản phẩm");
         btnBaoHanh = createMenuButton("Bảo hành");
@@ -122,9 +134,8 @@ public class Main extends JFrame {
         btnTaiKhoan = createMenuButton("Tài khoản");
         btnVaiTro = createMenuButton("Vai trò");
         btnThongKe = createMenuButton("Thống kê");
-        
-        
-        menuPanel.add(btnTrangChu);   
+
+        menuPanel.add(btnTrangChu);
         menuPanel.add(btnSanPham);
         menuPanel.add(btnBaoHanh);
         menuPanel.add(btnNhaCungCap);
@@ -136,13 +147,13 @@ public class Main extends JFrame {
         menuPanel.add(btnTaiKhoan);
         menuPanel.add(btnVaiTro);
         menuPanel.add(btnThongKe);
-        
+
         btnLogout = createMenuButton("Đăng xuất");
         btnLogout.setPreferredSize(new Dimension(Integer.MAX_VALUE, 50));
-        
+
         sidebar.add(menuPanel, BorderLayout.CENTER);
         sidebar.add(btnLogout, BorderLayout.SOUTH);
-        
+
         menuItems = new ArrayList<>();
         menuItems.add(btnTrangChu);
         menuItems.add(btnSanPham);
@@ -156,82 +167,70 @@ public class Main extends JFrame {
         menuItems.add(btnTaiKhoan);
         menuItems.add(btnVaiTro);
         menuItems.add(btnThongKe);
-        
-        // Mặc định chọn trang đầu
+
         setPanel(new JLabel("Trang chủ", SwingConstants.CENTER));
         setActive(btnTrangChu);
-        
-        // Trang chủ
+
         btnTrangChu.addActionListener(e -> {
             setPanel(new JLabel("Trang chủ", SwingConstants.CENTER));
             setActive(btnTrangChu);
         });
 
-        // Sản phẩm
         btnSanPham.addActionListener(e -> {
-            SanPhamPanel sanPhamPanel = new SanPhamPanel();
-            setPanel(sanPhamPanel);
+            setPanel(new SanPhamPanel());
             setActive(btnSanPham);
         });
 
-        // Bảo hành
         btnBaoHanh.addActionListener(e -> {
             setPanel(new JLabel("Trang bảo hành", SwingConstants.CENTER));
             setActive(btnBaoHanh);
         });
 
-        // Nhà cung cấp
         btnNhaCungCap.addActionListener(e -> {
             setPanel(new NhaCungCap());
             setActive(btnNhaCungCap);
         });
 
-        // Phiếu nhập
         btnPhieuNhap.addActionListener(e -> {
             setPanel(new PhieuNhap());
             setActive(btnPhieuNhap);
         });
 
-        // Hóa đơn
         btnHoaDon.addActionListener(e -> {
             setPanel(new JLabel("Trang hóa đơn", SwingConstants.CENTER));
             setActive(btnHoaDon);
         });
 
-        // Khách hàng
         btnKhachHang.addActionListener(e -> {
             setPanel(new JLabel("Trang khách hàng", SwingConstants.CENTER));
             setActive(btnKhachHang);
         });
-        // Khuyến mãi
+
         btnKhuyenMai.addActionListener(e -> {
-            setPanel(new JLabel("Trang khuyến mãi", SwingConstants.CENTER));
+            setPanel(new KhuyenMaiGUI());
             setActive(btnKhuyenMai);
         });
 
-        // Nhân viên
         btnNhanVien.addActionListener(e -> {
             setPanel(new JLabel("Trang nhân viên", SwingConstants.CENTER));
             setActive(btnNhanVien);
         });
 
-        // Tài khoản
         btnTaiKhoan.addActionListener(e -> {
             setPanel(new JLabel("Trang tài khoản", SwingConstants.CENTER));
             setActive(btnTaiKhoan);
         });
 
-        // Vai trò
         btnVaiTro.addActionListener(e -> {
             setPanel(new JLabel("Trang vai trò", SwingConstants.CENTER));
             setActive(btnVaiTro);
         });
 
-        // Thống kê
         btnThongKe.addActionListener(e -> {
             setPanel(new JLabel("Trang thống kê", SwingConstants.CENTER));
             setActive(btnThongKe);
         });
+
         btnLogout.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(
                     this,
@@ -241,32 +240,34 @@ public class Main extends JFrame {
             );
 
             if (confirm == JOptionPane.YES_OPTION) {
-                dispose();          // Đóng cửa sổ hiện tại
-                new LogIn().setVisible(true);   // Mở form Login
+                dispose();
+                new LogIn().setVisible(true);
             }
         });
     }
-    private JButton createMenuButton(String text){
+
+    private JButton createMenuButton(String text) {
         JButton btn = new JButton(text);
         btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-        btn.setAlignmentX(Component.LEFT_ALIGNMENT); //căn trái vị trí nút
-        btn.setFocusPainted(false); //ẩn viền focus
-        btn.setBorderPainted(false); //Ẩn toàn bộ viền nút
+        btn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
         btn.setBackground(Color.WHITE);
-        btn.setHorizontalAlignment(SwingConstants.LEFT); //Căn trái nội dung bên trong nút
+        btn.setHorizontalAlignment(SwingConstants.LEFT);
         btn.setFont(new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 14));
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR)); //con trỏ hình bàn tay
-        
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return btn;
     }
-    private void setPanel(Component comp){
+
+    private void setPanel(Component comp) {
         mainContent.removeAll();
         mainContent.add(comp, BorderLayout.CENTER);
         mainContent.revalidate();
         mainContent.repaint();
     }
-    private void setActive(JButton selectedBtn){
-        for(JButton btn : menuItems){
+
+    private void setActive(JButton selectedBtn) {
+        for (JButton btn : menuItems) {
             btn.setBackground(Color.WHITE);
             btn.setForeground(Color.BLACK);
         }
